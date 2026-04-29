@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+*.log
+
+# Dashboard monitor data
+dashboard/data/
+
+# Config-sync vault (user-specific configs)
+# If you want to use config-sync across machines, uncomment:
+# ~/.config-sync/

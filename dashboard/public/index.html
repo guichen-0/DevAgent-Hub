@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>Dev Dashboard</h1>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-tab="config-sync">
+        <span class="nav-icon">⚙</span>
+        Config Sync
+      </button>
+      <button class="nav-btn" data-tab="time-audit">
+        <span class="nav-icon">⏱</span>
+        Time Audit
+      </button>
+      <button class="nav-btn" data-tab="monitor">
+        <span class="nav-icon">📡</span>
+        监控中心
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="status-dot"></span>
+      <span>Connected</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- ═══════════════ Config Sync Tab ═══════════════ -->
+    <section id="tab-config-sync" class="tab-content active">
+      <div class="tab-header">
+        <h2>⚙ Config Sync</h2>
+        <p class="tab-desc">跨平台开发环境配置同步工具</p>
+      </div>
+
+      <div class="action-grid">
+        <button class="action-btn" onclick="api.configSync.init()">
+          <span class="action-icon">📦</span>
+          <span class="action-label">初始化</span>
+        </button>
+        <button class="action-btn" onclick="api.configSync.discover()">
+          <span class="action-icon">🔍</span>
+          <span class="action-label">扫描配置</span>
+        </button>
+        <button class="action-btn" onclick="api.configSync.backup()">
+          <span class="action-icon">⬆</span>
+          <span class="action-label">备份</span>
+        </button>
+        <button class="action-btn" onclick="api.configSync.restore()">
+          <span class="action-icon">⬇</span>
+          <span class="action-label">恢复</span>
+        </button>
+        <button class="action-btn" onclick="api.configSync.getStatus()">
+          <span class="action-icon">📊</span>
+          <span class="action-label">状态</span>
+        </button>
+        <button class="action-btn" onclick="api.configSync.listSources()">
+          <span class="action-icon">📋</span>
+          <span class="action-label">列出源</span>
+        </button>
+        <button class="action-btn" onclick="api.configSync.remote.status()">
+          <span class="action-icon">☁</span>
+          <span class="action-label">远程同步</span>
+        </button>
+      </div>
+
+      <div class="quick-actions">
+        <h3>快速操作</h3>
+        <div class="inline-form">
+          <input type="text" id="cs-profile" placeholder="profile 名称" value="work">
+          <button onclick="api.configSync.initWithProfile()">初始化+Profile</button>
+          <button onclick="api.configSync.backupWithProfile()">备份指定Profile</button>
+          <button onclick="api.configSync.backupWithLabel()">备份(加备注)</button>
+        </div>
+      </div>
+
+      <div class="version-section">
+        <div class="section-header">
+          <h3>📜 版本历史</h3>
+          <button class="refresh-btn" onclick="api.configSync.loadVersions()">刷新</button>
+        </div>
+        <div id="version-list" class="version-list">
+          <span class="dim">点击「备份」查看版本记录</span>
+        </div>
+      </div>
+
+      <div class="version-section">
+        <div class="section-header">
+          <h3>☁ 远程同步</h3>
+          <span id="remote-status-badge" class="version-badge" style="background:var(--text-dim)">未配置</span>
+        </div>
+        <div class="inline-form" style="gap:8px">
+          <input type="text" id="remote-url" placeholder="https://github.com/user/repo.git" style="flex:1">
+          <button onclick="api.configSync.remote.init()">初始化</button>
+          <button onclick="api.configSync.remote.push()">推送</button>
+          <button onclick="api.configSync.remote.pull()">拉取</button>
+          <button onclick="api.configSync.remote.status()">状态</button>
+          <button onclick="api.configSync.remote.disconnect()" style="color:var(--red)">断开</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ Time Audit Tab ═══════════════ -->
+    <section id="tab-time-audit" class="tab-content">
+      <div class="tab-header">
+        <h2>⏱ Time Audit</h2>
+        <p class="tab-desc">个人时间使用情况审计</p>
+      </div>
+
+      <div class="action-grid">
+        <button class="action-btn" onclick="api.timeAudit.status()">
+          <span class="action-icon">📡</span>
+          <span class="action-label">数据源状态</span>
+        </button>
+        <button class="action-btn" onclick="api.timeAudit.scan()">
+          <span class="action-icon">📥</span>
+          <span class="action-label">扫描数据</span>
+        </button>
+        <button class="action-btn" onclick="api.timeAudit.report('summary')">
+          <span class="action-icon">📊</span>
+          <span class="action-label">今日报告</span>
+        </button>
+        <button class="action-btn" onclick="api.timeAudit.showTrends()">
+          <span class="action-icon">📈</span>
+          <span class="action-label">趋势分析</span>
+        </button>
+        <button class="action-btn" onclick="api.timeAudit.dailyDigest()">
+          <span class="action-icon">📰</span>
+          <span class="action-label">每日摘要</span>
+        </button>
+        <button class="action-btn" onclick="api.timeAudit.cacheInfo()">
+          <span class="action-icon">💾</span>
+          <span class="action-label">缓存信息</span>
+        </button>
+        <button class="action-btn" onclick="api.timeAudit.clearCache()">
+          <span class="action-icon">🗑</span>
+          <span class="action-label">清除缓存</span>
+        </button>
+      </div>
+
+      <div class="quick-actions">
+        <h3>自定义查询</h3>
+        <div class="inline-form">
+          <label>起始日期: <input type="date" id="ta-since"></label>
+          <label>结束日期: <input type="date" id="ta-to"></label>
+          <button onclick="api.timeAudit.customReport()">生成报告</button>
+        </div>
+      </div>
+
+      <!-- Efficiency Score -->
+      <div class="efficiency-section" id="efficiency-section" style="display:none">
+        <div class="efficiency-grid">
+          <div class="efficiency-card">
+            <div class="efficiency-score" id="eff-score">0</div>
+            <div class="efficiency-label">效率评分</div>
+          </div>
+          <div class="efficiency-card">
+            <div class="efficiency-value" id="eff-productive">0h 0m</div>
+            <div class="efficiency-label">开发时间</div>
+          </div>
+          <div class="efficiency-card">
+            <div class="efficiency-value" id="eff-entertainment">0h 0m</div>
+            <div class="efficiency-label">娱乐时间</div>
+          </div>
+          <div class="efficiency-card">
+            <div class="efficiency-value" id="eff-ratio">0x</div>
+            <div class="efficiency-label">效率比</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Area -->
+      <div class="chart-section" id="chart-section" style="display:none">
+        <div class="section-header">
+          <h3>📈 每日趋势</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Category Breakdown -->
+      <div class="chart-section" id="pie-section" style="display:none">
+        <div class="section-header">
+          <h3>🎯 分类占比</h3>
+        </div>
+        <div class="chart-container" style="max-width:350px;margin:0 auto">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ Monitor Tab ═══════════════ -->
+    <section id="tab-monitor" class="tab-content">
+      <div class="tab-header">
+        <h2>📡 监控中心</h2>
+        <p class="tab-desc">插件化监控平台 — 监控 HTTP、进程、文件、命令、Git 仓库</p>
+      </div>
+
+      <div class="action-grid">
+        <button class="action-btn" onclick="api.monitor.showGrid()">
+          <span class="action-icon">📊</span>
+          <span class="action-label">监控面板</span>
+        </button>
+        <button class="action-btn" onclick="api.monitor.showNewForm()">
+          <span class="action-icon">➕</span>
+          <span class="action-label">新建监控</span>
+        </button>
+        <button class="action-btn" onclick="api.monitor.listAll()">
+          <span class="action-icon">📋</span>
+          <span class="action-label">列表管理</span>
+        </button>
+      </div>
+
+      <!-- Monitor Grid -->
+      <div id="monitor-grid" class="monitor-grid" style="display:none"></div>
+
+      <!-- New/Edit Form -->
+      <div id="monitor-form" class="version-section" style="display:none">
+        <div class="section-header">
+          <h3 id="monitor-form-title">新建监控</h3>
+        </div>
+        <div id="monitor-form-body"></div>
+      </div>
+
+      <!-- Monitor Detail -->
+      <div id="monitor-detail" class="version-section" style="display:none">
+        <div id="monitor-detail-body"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ Output Area ═══════════════ -->
+    <div class="output-section">
+      <div class="output-header">
+        <span>Output</span>
+        <button class="clear-btn" onclick="clearOutput()">Clear</button>
+      </div>
+      <pre id="output"><span class="dim">Ready. Click an action to start.</span></pre>
+    </div>
+  </main>
+
+  <script src="/app.js"></script>
+  <script src="/monitor.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "config-sync",
+  "version": "0.1.0",
+  "description": "Cross-platform dev environment config sync tool",
+  "type": "module",
+  "bin": {
+    "config-sync": "./bin/config-sync.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node bin/config-sync.js",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "diff": "^7.0.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/diff": "^7.0.1",
+    "@types/node": "^22.14.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}

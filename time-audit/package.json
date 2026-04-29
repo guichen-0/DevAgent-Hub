@@ -1,0 +1,26 @@
+{
+  "name": "time-audit",
+  "version": "0.1.0",
+  "description": "Personal time audit CLI - analyze how you spend your time on the computer",
+  "type": "module",
+  "bin": {
+    "time-audit": "./bin/time-audit.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node bin/time-audit.js",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "cli-table3": "^0.6.5",
+    "commander": "^13.1.0",
+    "sql.js": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}
