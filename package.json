@@ -1,0 +1,26 @@
+{
+  "name": "devagent-hub",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "AI-driven developer environment monitoring & config management platform",
+  "scripts": {
+    "dev": "tsx server/index.ts",
+    "start": "tsx server/index.ts",
+    "config-sync": "tsx config-sync/src/index.ts",
+    "time-audit": "tsx time-audit/src/index.ts"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "cli-table3": "^0.6.5",
+    "commander": "^13.1.0",
+    "express": "^5.1.0",
+    "sql.js": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.14.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}

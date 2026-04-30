@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevAgent Hub</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/pages/config-sync/page.css">
+  <link rel="stylesheet" href="/pages/time-audit/page.css">
+  <link rel="stylesheet" href="/pages/monitor/page.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>DevAgent Hub</h1>
+      <span class="sidebar-version">v0.2</span>
+    </div>
+    <nav class="sidebar-nav" id="main-nav">
+      <button class="nav-item active" data-page="config-sync">
+        <span class="nav-icon">⚙</span>
+        <span>配置同步</span>
+      </button>
+      <button class="nav-item" data-page="time-audit">
+        <span class="nav-icon">⏱</span>
+        <span>时间审计</span>
+      </button>
+      <button class="nav-item" data-page="monitor">
+        <span class="nav-icon">📡</span>
+        <span>监控中心</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">Connected</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main-content">
+    <!-- Pages loaded dynamically here -->
+    <div id="page-container"></div>
+  </main>
+
+  <script src="/api.js"></script>
+  <script src="/pages/config-sync/page.js"></script>
+  <script src="/pages/time-audit/page.js"></script>
+  <script src="/pages/monitor/page.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

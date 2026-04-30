@@ -203,6 +203,39 @@ export function getSyncStatus(): SyncStatus {
   };
 }
 
+export function cloneRemote(url: string, branch: string = 'main'): { success: boolean; message: string } {
+  const vaultRoot = getVaultRoot();
+  try {
+    // Check if vault already has data
+    if (fs.existsSync(vaultRoot) && isGitRepo()) {
+      return { success: false, message: 'Vault is already a git repository. Use pull instead.' };
+    }
+    // Remove empty/partial vault directory
+    if (fs.existsSync(vaultRoot)) {
+      fs.rmSync(vaultRoot, { recursive: true, force: true });
+    }
+    // Ensure parent exists
+    const parent = path.dirname(vaultRoot);
+    if (!fs.existsSync(parent)) fs.mkdirSync(parent, { recursive: true });
+
+    // Clone into vault directory
+    execSync(`git clone "${url}" "${vaultRoot}"`, { encoding: 'utf-8', stdio: 'pipe' });
+
+    // Checkout branch
+    git(`checkout ${branch}`, vaultRoot);
+
+    // Write remote config
+    const config: RemoteConfig = {
+      url, branch, lastSync: new Date().toISOString(), autoCommit: true,
+    };
+    writeRemoteConfig(config);
+
+    return { success: true, message: `Cloned from ${url} (${branch})` };
+  } catch (err) {
+    return { success: false, message: `Clone failed: ${(err as Error).message}` };
+  }
+}
+
 export function disconnectRemote(): boolean {
   const vaultRoot = getVaultRoot();
   try {

@@ -3,6 +3,9 @@ dist/
 .env
 *.log
 
+# Data storage
+data/
+
 # Dashboard monitor data
 dashboard/data/
 
